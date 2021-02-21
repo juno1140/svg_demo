@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="robots" content="noindex">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ title }}</h1>
+        <div>
+            <svg width="140" height="170" xmlns="http://www.w3.org/2000/svg">
+                <title>猫</title>
+                <desc>猫の棒線画</desc>
+
+                <circle cx="70" cy="95" r="50" style="stroke: black; fill: none"></circle>
+                <circle cx="55" cy="80" r="5" style="stroke: black; fill: #339933"></circle>
+                <circle cx="85" cy="80" r="5" style="stroke: black; fill: #339933"></circle>
+                <g id="whiskers">
+                    <line x1="75" y1="95" x2="135" y2="85" style="stroke: black" />
+                    <line x1="75" y1="95" x2="135" y2="105" style="stroke: black" />
+                </g>
+                <use xlink:href="#whiskers" transform="scale(-1 1) translate(-140 0)" />
+                <!-- 耳 -->
+                <polyline points="108 62, 90 10, 70 45, 50 10, 32 62" style="stroke: black; fill: none" />
+                <!-- 口 -->
+                <polyline points="35 110, 45 120 95 120 105 110" style="stroke: black; fill: none" />
+                <!-- 鼻 -->
+                <path d="M 75 90 L 65 90 A 5 10 0  0 0 75 90" style="stroke: black; fill: #ffcccc" />
+                <text x="60" y="165" style="font-family: sans-serif; font-size: 14pt; stroke: none; fill: black">cat</text>
+            </svg>
+        </div>
+        <div>
+            <svg width="200px" height="150px" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="48,16 16,96 96,48 0,48 80,96" style="fill-rule: nonzero; stroke: black; fill: yellow" />
+                <polygon points="148,16 116,96 196,48 100,48 180,96" style="fill-rule: evenodd; stroke: black;" v-bind:fill="color" />
+                <text x="80" y="120" style="font-family: sans-serif; font-size: 14pt; stroke: none; fill: black">star</text>
+            </svg>
+        </div>
+        <div>
+            <button @click="changeColor">色変更</button>
+        </div>
+        <div>
+            <svg width="300px" height="410px" viewBox="0 0 300 410" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <g id="def-top-left" style="stroke: black;">
+                        <path d="M 110,100 L 95,130 150,130 190,100 Z" />
+                    </g>
+                    <g id="def-left" style="stroke: black;">
+                        <path d="M 95,130 L 95,270 150,270 150,130 Z" />
+                    </g>
+                    <g id="def-top" style="stroke: black;">
+                        <path d="M 150 40 L 110,100  150,130 190,100 Z" />
+                    </g>
+                </defs>
+                <use id="top-left" xlink:href="#def-top-left" @click="changeTarget" v-bind:fill="targetColors['top-left']" />
+                <use id="top-right" xlink:href="#def-top-left" x="-300" y="0" transform="scale(-1,1)" @click="changeTarget" v-bind:fill="targetColors['top-right']" />
+                <use id="bottom-left" xlink:href="#def-top-left" x="0" y="-400" transform="scale(1,-1)" @click="changeTarget" v-bind:fill="targetColors['bottom-left']" />
+                <use id="bottom-right" xlink:href="#def-top-left" x="-300" y="-400" transform="scale(-1,-1)" @click="changeTarget" v-bind:fill="targetColors['bottom-right']" />
+                <use id="left" xlink:href="#def-left" @click="changeTarget" v-bind:fill="targetColors['left']" />
+                <use id="right" xlink:href="#def-left" x="55" y="0" @click="changeTarget" v-bind:fill="targetColors['right']" />
+                <use id="top" xlink:href="#def-top" @click="changeTarget" v-bind:fill="targetColors['top']" />
+                <use id="bottom" xlink:href="#def-top" x="0" y="-400" transform="scale(1,-1)" @click="changeTarget" v-bind:fill="targetColors['bottom']" />
+                <ellipse cx="150" cy="200" rx="30" ry="100" />
+            </svg>
+        </div>
+        <div>
+            <p>{{ target }}</p>
+            <input type="color" @change="changeTargetColor" v-model="inputColor">
+            <p>{{ inputColor }}</p>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                title: "SVGデモ",
+                color: "#aa88ff",
+
+                // ラフティング
+                target: '色をつけたい部分をクリックしてください',
+                targetColors: {
+                    'top': "#aaddff",
+                    'bottom': "#aaddff",
+                    'top-left': "#aaddff",
+                    'top-right': "#aaddff",
+                    'left': "#aaddff",
+                    'right': "#aaddff",
+                    'bottom-left': "#aaddff",
+                    'bottom-right': "#aaddff",
+                },
+                inputColor: '色を選んでください',
+
+            },
+            methods: {
+                changeColor(){
+                    this.color = "#77ffcc"
+                },
+                changeTarget(e){
+                    this.target = e.target.id;
+                },
+                changeTargetColor(){
+                    console.log(this.target)
+                    this.targetColors[this.target] = this.inputColor;
+                }
+            },
+        })
+    </script>
+</body>
+</html>
